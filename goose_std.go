@@ -26,6 +26,6 @@ func BytesEqual(x []byte, y []byte) bool {
 // Compute the sum of two numbers, `Assume`ing that this does not overflow.
 // *Use with care*, assumptions are trusted and should be justified!
 func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
-	machine.Assume(x+y > x)
+	machine.Assume(x+y >= x)
 	return x+y
 }
