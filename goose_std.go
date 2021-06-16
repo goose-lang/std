@@ -1,4 +1,4 @@
-package goose_std
+package std
 
 import (
 	"github.com/tchajed/goose/machine"
