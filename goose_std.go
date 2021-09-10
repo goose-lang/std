@@ -1,8 +1,8 @@
 package std
 
 import (
-	"sync"
 	"github.com/tchajed/goose/machine"
+	"sync"
 )
 
 // Test if the two byte slices are equal.
