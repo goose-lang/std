@@ -37,9 +37,9 @@ func Multipar(num uint64, op func(uint64)) {
 	num_left_cond := sync.NewCond(num_left_mu)
 
 	for i := uint64(0); i < num; i++ {
-		i2 := i // don't read i from other thread
+		i := i // don't capture loop variable
 		go func() {
-			op(i2)
+			op(i)
 			// Signal that this one is done
 			num_left_mu.Lock()
 			num_left -= 1

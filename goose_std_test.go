@@ -27,3 +27,15 @@ func TestSumAssumeNoOverflow(t *testing.T) {
 		SumAssumeNoOverflow(1<<64-1, 2)
 	})
 }
+
+func TestMultipar(t *testing.T) {
+	ch := make(chan uint64)
+	go Multipar(5, func(i uint64) {
+		ch <- i
+	})
+	var results []uint64
+	for i := 0; i < 5; i++ {
+		results = append(results, <-ch)
+	}
+	assert.ElementsMatch(t, results, []uint64{0, 1, 2, 3, 4})
+}
