@@ -14,6 +14,17 @@ func TestBytesEqual(t *testing.T) {
 	assert.False(BytesEqual([]byte{1, 3}, []byte{1, 2}), "contents differ")
 }
 
+func TestBytesEqualNilEmpty(t *testing.T) {
+	assert := assert.New(t)
+
+	// nil and empty are BytesEqual but not ==
+	assert.True(BytesEqual(nil, []byte{}))
+	assert.False(nil == []byte{})
+
+	assert.False(BytesEqual(nil, []byte{1, 2}))
+	assert.False(BytesEqual([]byte{}, []byte{1, 2}))
+}
+
 func TestSumAssumeNoOverflow(t *testing.T) {
 	assert := assert.New(t)
 
