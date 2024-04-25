@@ -25,6 +25,19 @@ func TestBytesEqualNilEmpty(t *testing.T) {
 	assert.False(BytesEqual([]byte{}, []byte{1, 2}))
 }
 
+func TestBytesClone(t *testing.T) {
+	assert := assert.New(t)
+
+	var s0 []byte
+	s1 := BytesClone(s0)
+	assert.True(s1 == nil)
+
+	s2 := []byte{1, 2}
+	s3 := BytesClone(s2)
+	s3[0] = 2
+	assert.True(s2[0] == 1)
+}
+
 func TestSumAssumeNoOverflow(t *testing.T) {
 	assert := assert.New(t)
 
