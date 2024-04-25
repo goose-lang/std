@@ -24,6 +24,16 @@ func BytesEqual(x []byte, y []byte) bool {
 	return retval
 }
 
+// See the [reference].
+//
+// [reference]: https://pkg.go.dev/bytes#Clone
+func BytesClone(b []byte) []byte {
+	if b == nil {
+		return nil
+	}
+	return append([]byte{}, b...)
+}
+
 // Compute the sum of two numbers, `Assume`ing that this does not overflow.
 // *Use with care*, assumptions are trusted and should be justified!
 func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
