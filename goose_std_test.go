@@ -38,6 +38,18 @@ func TestBytesClone(t *testing.T) {
 	assert.True(s2[0] == 1)
 }
 
+func TestSumNoOverflow(t *testing.T) {
+	assert := assert.New(t)
+
+	assert.Equal(true, SumNoOverflow(2, 3))
+	assert.Equal(true, SumNoOverflow(1<<64-2, 1))
+	assert.Equal(true, SumNoOverflow(1, 1<<64-2))
+
+	assert.Equal(false, SumNoOverflow(1<<64-1, 1))
+	assert.Equal(false, SumNoOverflow(1<<63, 1<<63))
+	assert.Equal(false, SumNoOverflow(1<<64-7, 26))
+}
+
 func TestSumAssumeNoOverflow(t *testing.T) {
 	assert := assert.New(t)
 

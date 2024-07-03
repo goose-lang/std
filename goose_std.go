@@ -34,10 +34,15 @@ func BytesClone(b []byte) []byte {
 	return append([]byte{}, b...)
 }
 
+// Returns true if x + y does not overflow
+func SumNoOverflow(x uint64, y uint64) bool {
+	return x+y >= x
+}
+
 // Compute the sum of two numbers, `Assume`ing that this does not overflow.
 // *Use with care*, assumptions are trusted and should be justified!
 func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
-	machine.Assume(x+y >= x)
+	machine.Assume(SumNoOverflow(x, y))
 	return x + y
 }
 
