@@ -34,6 +34,10 @@ func BytesClone(b []byte) []byte {
 	return append([]byte{}, b...)
 }
 
+func SliceSplit[T any](xs []T, n uint64) ([]T, []T) {
+	return xs[:n], xs[n:]
+}
+
 // Returns true if x + y does not overflow
 func SumNoOverflow(x uint64, y uint64) bool {
 	return x+y >= x

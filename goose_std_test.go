@@ -38,6 +38,19 @@ func TestBytesClone(t *testing.T) {
 	assert.True(s2[0] == 1)
 }
 
+func TestSliceSplit(t *testing.T) {
+	assert := assert.New(t)
+
+	s := []uint64{1, 2, 3}
+	s1, s2 := SliceSplit(s, 1)
+	assert.Len(s1, 1)
+	assert.Len(s2, 2)
+
+	s1, s2 = SliceSplit(s, 3)
+	assert.Len(s1, 3)
+	assert.Len(s2, 0)
+}
+
 func TestSumNoOverflow(t *testing.T) {
 	assert := assert.New(t)
 
