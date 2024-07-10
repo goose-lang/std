@@ -34,7 +34,14 @@ func BytesClone(b []byte) []byte {
 	return append([]byte{}, b...)
 }
 
+// SliceSplit splits xs at n into two slices.
+//
+// The capacity of the first slice overlaps with the second, so afterward it is
+// no longer safe to append to the first slice.
 func SliceSplit[T any](xs []T, n uint64) ([]T, []T) {
+	// TODO: we could get ownership of xs's capacity if we could write xs[:n:n]
+	// (this would reset xs to have no extra capacity), but Goose doesn't
+	// support that.
 	return xs[:n], xs[n:]
 }
 
