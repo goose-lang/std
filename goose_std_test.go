@@ -41,7 +41,7 @@ func TestBytesClone(t *testing.T) {
 func TestSliceSplit(t *testing.T) {
 	assert := assert.New(t)
 
-	s := []uint64{1, 2, 3}
+	s := []byte{1, 2, 3}
 	s1, s2 := SliceSplit(s, 1)
 	assert.Len(s1, 1)
 	assert.Len(s2, 2)
