@@ -9,3 +9,5 @@ To translate with `goose` (in the repo directory):
 ```bash
 goose -out ~/code/perennial/external/Goose
 ```
+
+To makes changes you'll need to submit a pull request so that CI can run first.
