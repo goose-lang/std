@@ -3,26 +3,26 @@ name: CI
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
 
 jobs:
   test:
     strategy:
       matrix:
-        go-version: ["1.22.x"]
+        go-version: ["stable"]
     runs-on: "ubuntu-latest"
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: ${{ matrix.go-version }}
-    - uses: actions/checkout@v4
-    - name: Check style
-      run: |
-        gofmt -w -s .
-        git diff --exit-code
-    - name: Test
-      run: |
-        go vet ./...
-        go test -v ./...
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      - uses: actions/checkout@v4
+      - name: Check style
+        run: |
+          gofmt -w -s .
+          git diff --exit-code
+      - name: Test
+        run: |
+          go vet ./...
+          go test -v ./...
