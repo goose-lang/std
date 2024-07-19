@@ -1,10 +1,10 @@
 module github.com/goose-lang/std
 
-go 1.18
+go 1.21
 
 require (
+	github.com/goose-lang/goose v0.6.0
 	github.com/stretchr/testify v1.9.0
-	github.com/tchajed/goose v0.5.3
 )
 
 require (
