@@ -1,7 +1,7 @@
 package std
 
 import (
-	"github.com/tchajed/goose/machine"
+	"github.com/goose-lang/goose/machine"
 	"sync"
 )
 
