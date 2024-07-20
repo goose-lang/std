@@ -1,11 +1,12 @@
 package std
 
 import (
-	"github.com/goose-lang/goose/machine"
 	"sync"
+
+	"github.com/goose-lang/goose/machine"
 )
 
-// Test if the two byte slices are equal.
+// BytesEqual returns if the two byte slices are equal.
 func BytesEqual(x []byte, y []byte) bool {
 	xlen := len(x)
 	if xlen != len(y) {
@@ -53,13 +54,19 @@ func SumNoOverflow(x uint64, y uint64) bool {
 	return x+y >= x
 }
 
-// Compute the sum of two numbers, `Assume`ing that this does not overflow.
-// *Use with care*, assumptions are trusted and should be justified!
+// SumAssumeNoOverflow returns x + y, `Assume`ing that this does not overflow.
+//
+// *Use with care* - if the assumption is violated this function will panic.
 func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
 	machine.Assume(SumNoOverflow(x, y))
 	return x + y
 }
 
+// Multipar runs op(0) ... op(num-1) in parallel and waits for them all to finish.
+//
+// Implementation note: does not use a done channel (which is the standard
+// pattern in Go) because this is not supported by Goose. Instead uses mutexes
+// and condition variables since these are modeled in Goose
 func Multipar(num uint64, op func(uint64)) {
 	var num_left = num
 	num_left_mu := new(sync.Mutex)
