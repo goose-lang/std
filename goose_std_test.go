@@ -88,3 +88,8 @@ func TestMultipar(t *testing.T) {
 	}
 	assert.ElementsMatch(t, results, []uint64{0, 1, 2, 3, 4})
 }
+
+func TestSkip(t *testing.T) {
+	// nothing much to test, it does nothing
+	Skip()
+}
