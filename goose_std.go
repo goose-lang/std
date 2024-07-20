@@ -90,3 +90,12 @@ func Multipar(num uint64, op func(uint64)) {
 	}
 	num_left_mu.Unlock()
 }
+
+// Skip is a no-op that can be useful in proofs.
+//
+// Occasionally a proof may need to open an invariant and perform a ghost update
+// across a step in the operational semantics. The GooseLang model may not have
+// a convenient step, but it is always sound to insert more. Calling std.Skip()
+// is a simple way to do so - the model always requires one step to reduce this
+// application to a value.
+func Skip() {}
