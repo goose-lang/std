@@ -3,7 +3,7 @@ package std
 import (
 	"sync"
 
-	"github.com/goose-lang/goose/machine"
+	"github.com/goose-lang/primitive"
 )
 
 // BytesEqual returns if the two byte slices are equal.
@@ -58,7 +58,7 @@ func SumNoOverflow(x uint64, y uint64) bool {
 //
 // *Use with care* - if the assumption is violated this function will panic.
 func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
-	machine.Assume(SumNoOverflow(x, y))
+	primitive.Assume(SumNoOverflow(x, y))
 	return x + y
 }
 
