@@ -62,6 +62,61 @@ func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
 	return x + y
 }
 
+// JoinHandle is a mechanism to wait for a goroutine to finish. Calling `Join()`
+// on the handle returned by `Spawn(f)` will wait for f to finish.
+type JoinHandle struct {
+	mu   *sync.Mutex
+	done bool
+	cond *sync.Cond
+}
+
+func newJoinHandle() *JoinHandle {
+	mu := new(sync.Mutex)
+	cond := sync.NewCond(mu)
+	return &JoinHandle{
+		mu:   mu,
+		done: false,
+		cond: cond,
+	}
+}
+
+func (h *JoinHandle) finish() {
+	h.mu.Lock()
+	h.done = true
+	h.cond.Signal()
+	h.mu.Unlock()
+}
+
+// Spawn runs `f` in a parallel goroutine and returns a handle to wait for
+// it to finish.
+//
+// Due to Goose limitations we do not return anything from the function, but it
+// could return an `interface{}` value or be generic in the return value with
+// essentially the same implementation, replacing `done` with a pointer to the
+// result value.
+func Spawn(f func()) *JoinHandle {
+	h := newJoinHandle()
+	go func() {
+		f()
+		h.finish()
+	}()
+	return h
+}
+
+func (h *JoinHandle) Join() {
+	h.mu.Lock()
+	for {
+		if h.done {
+			// the proof is a bit easier if we do this; it will cause a second
+			// Join() (which is a misuse of the API) to fail
+			h.done = false
+			break
+		}
+		h.cond.Wait()
+	}
+	h.mu.Unlock()
+}
+
 // Multipar runs op(0) ... op(num-1) in parallel and waits for them all to finish.
 //
 // Implementation note: does not use a done channel (which is the standard
