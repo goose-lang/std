@@ -70,6 +70,23 @@ type JoinHandle struct {
 	cond *sync.Cond
 }
 
+func newJoinHandle() *JoinHandle {
+	mu := new(sync.Mutex)
+	cond := sync.NewCond(mu)
+	return &JoinHandle{
+		mu:   mu,
+		done: false,
+		cond: cond,
+	}
+}
+
+func (h *JoinHandle) finish() {
+	h.mu.Lock()
+	h.done = true
+	h.cond.Signal()
+	h.mu.Unlock()
+}
+
 // Spawn runs `f` in a parallel goroutine and returns a handle to wait for
 // it to finish.
 //
@@ -78,15 +95,10 @@ type JoinHandle struct {
 // essentially the same implementation, replacing `done` with a pointer to the
 // result value.
 func Spawn(f func()) *JoinHandle {
-	mu := new(sync.Mutex)
-	cond := sync.NewCond(mu)
-	h := &JoinHandle{mu: mu, done: false, cond: cond}
+	h := newJoinHandle()
 	go func() {
 		f()
-		mu.Lock()
-		h.done = true
-		cond.Signal()
-		mu.Unlock()
+		h.finish()
 	}()
 	return h
 }
@@ -95,6 +107,9 @@ func (h *JoinHandle) Join() {
 	h.mu.Lock()
 	for {
 		if h.done {
+			// the proof is a bit easier if we do this; it will cause a second
+			// Join() (which is a misuse of the API) to fail
+			h.done = false
 			break
 		}
 		h.cond.Wait()
