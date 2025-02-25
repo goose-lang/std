@@ -6,6 +6,13 @@ import (
 	"github.com/goose-lang/primitive"
 )
 
+// Assert(b) panics if b doesn't hold
+func Assert(b bool) {
+	if !b {
+		panic("assertion failure")
+	}
+}
+
 // BytesEqual returns if the two byte slices are equal.
 func BytesEqual(x []byte, y []byte) bool {
 	xlen := len(x)

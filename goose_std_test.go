@@ -6,6 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestAssert(t *testing.T) {
+	Assert(true)
+	assert.Panics(t, func() {
+		Assert(false)
+	})
+}
+
 func TestBytesEqual(t *testing.T) {
 	assert := assert.New(t)
 
