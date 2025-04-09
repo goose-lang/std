@@ -69,6 +69,22 @@ func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
 	return x + y
 }
 
+// MulNoOverflow returns true if x * y does not overflow
+func MulNoOverflow(x uint64, y uint64) bool {
+	if x == 0 || y == 0 {
+		return true
+	}
+	return x <= (1<<64-1)/y
+}
+
+// MulAssumeNoOverflow returns x * y, `Assume`ing that this does not overflow.
+//
+// *Use with care* - if the assumption is violated this function will panic.
+func MulAssumeNoOverflow(x uint64, y uint64) uint64 {
+	primitive.Assume(MulNoOverflow(x, y))
+	return x * y
+}
+
 // JoinHandle is a mechanism to wait for a goroutine to finish. Calling `Join()`
 // on the handle returned by `Spawn(f)` will wait for f to finish.
 type JoinHandle struct {
