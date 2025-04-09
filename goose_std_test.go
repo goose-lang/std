@@ -84,6 +84,21 @@ func TestSumAssumeNoOverflow(t *testing.T) {
 	})
 }
 
+func TestMulAssumeNoOverflow(t *testing.T) {
+	assert := assert.New(t)
+
+	assert.Equal(uint64(6), MulAssumeNoOverflow(2, 3))
+	assert.Equal(uint64(0), MulAssumeNoOverflow(0, 3))
+	assert.Equal(uint64(1<<64-1), MulAssumeNoOverflow(1<<32-1, 1<<32+1))
+	assert.Equal(uint64(1<<64-1), MulAssumeNoOverflow(1<<32+1, 1<<32-1))
+	assert.Panics(func() {
+		MulAssumeNoOverflow(1<<63, 2)
+	})
+	assert.Panics(func() {
+		MulAssumeNoOverflow(2, 1<<63)
+	})
+}
+
 func TestMultipar(t *testing.T) {
 	ch := make(chan uint64)
 	go Multipar(5, func(i uint64) {
