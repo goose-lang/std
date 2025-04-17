@@ -177,3 +177,24 @@ func Multipar(num uint64, op func(uint64)) {
 // is a simple way to do so - the model always requires one step to reduce this
 // application to a value.
 func Skip() {}
+
+// Shuffle shuffles the elements of xs in place, using a Fisher-Yates shuffle.
+func Shuffle(xs []uint64) {
+	for i := uint64(len(xs) - 1); i > 0; i-- {
+		j := primitive.RandomUint64() % uint64(i+1)
+		temp := xs[i]
+		xs[i] = xs[j]
+		xs[j] = temp
+	}
+}
+
+// Permutation returns a random permutation of the integers 0, ..., n-1, using a
+// Fisher-Yates shuffle.
+func Permutation(n uint64) []uint64 {
+	order := make([]uint64, n)
+	for i := uint64(0); i < n; i++ {
+		order[i] = uint64(i)
+	}
+	Shuffle(order)
+	return order
+}

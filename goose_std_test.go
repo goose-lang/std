@@ -115,3 +115,24 @@ func TestSkip(t *testing.T) {
 	// nothing much to test, it does nothing
 	Skip()
 }
+
+func TestPermutation(t *testing.T) {
+	assert := assert.New(t)
+
+	order := Permutation(1)
+	assert.ElementsMatch(order, []uint64{0})
+
+	order = Permutation(2)
+	assert.ElementsMatch(order, []uint64{0, 1})
+
+	order = Permutation(5)
+	assert.ElementsMatch(order, []uint64{0, 1, 2, 3, 4})
+}
+
+func TestShuffle(t *testing.T) {
+	assert := assert.New(t)
+
+	xs := []uint64{1, 1, 1}
+	Shuffle(xs)
+	assert.Equal(xs, []uint64{1, 1, 1})
+}
