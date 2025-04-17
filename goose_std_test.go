@@ -132,7 +132,10 @@ func TestPermutation(t *testing.T) {
 func TestShuffle(t *testing.T) {
 	assert := assert.New(t)
 
-	xs := []uint64{1, 1, 1}
+	xs := []uint64{}
+	Shuffle(xs)
+
+	xs = []uint64{1, 1, 1}
 	Shuffle(xs)
 	assert.Equal(xs, []uint64{1, 1, 1})
 }
