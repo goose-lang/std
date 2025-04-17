@@ -180,6 +180,9 @@ func Skip() {}
 
 // Shuffle shuffles the elements of xs in place, using a Fisher-Yates shuffle.
 func Shuffle(xs []uint64) {
+	if len(xs) == 0 {
+		return
+	}
 	for i := uint64(len(xs) - 1); i > 0; i-- {
 		j := primitive.RandomUint64() % uint64(i+1)
 		temp := xs[i]
