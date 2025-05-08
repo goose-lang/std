@@ -2,6 +2,8 @@ package std
 
 import (
 	"sync"
+
+	"github.com/goose-lang/std/std_core"
 )
 
 // Assert(b) panics if b doesn't hold
@@ -9,6 +11,18 @@ func Assert(b bool) {
 	if !b {
 		panic("assertion failure")
 	}
+}
+
+// Returns true if x + y does not overflow
+func SumNoOverflow(x uint64, y uint64) bool {
+	return std_core.SumNoOverflow(x, y)
+}
+
+// SumAssumeNoOverflow returns x + y, `Assume`ing that this does not overflow.
+//
+// *Use with care* - if the assumption is violated this function will panic.
+func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
+	return std_core.SumAssumeNoOverflow(x, y)
 }
 
 // BytesEqual returns if the two byte slices are equal.
