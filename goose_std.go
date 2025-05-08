@@ -46,10 +46,7 @@ func BytesClone(b []byte) []byte {
 //
 // The capacity of the first slice overlaps with the second, so afterward it is
 // no longer safe to append to the first slice.
-//
-// TODO: once goose supports it, make this function generic in the slice element
-// type
-func SliceSplit(xs []byte, n uint64) ([]byte, []byte) {
+func SliceSplit[T any](xs []T, n uint64) ([]T, []T) {
 	// TODO: we could get ownership of xs's capacity if we could write xs[:n:n]
 	// (this would reset xs to have no extra capacity), but Goose doesn't
 	// support that.
