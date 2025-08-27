@@ -3,7 +3,9 @@
 // It is used for bootstrapping goose.
 package std_core
 
-import "github.com/goose-lang/primitive"
+import (
+	"github.com/goose-lang/primitive"
+)
 
 // Returns true if x + y does not overflow
 func SumNoOverflow(x uint64, y uint64) bool {
