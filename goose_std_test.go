@@ -1,6 +1,7 @@
 package std
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,6 +12,18 @@ func TestAssert(t *testing.T) {
 	assert.Panics(t, func() {
 		Assert(false)
 	})
+}
+
+func TestSignedSumAssumeNoOverflow(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(int(3), SignedSumAssumeNoOverflow(1, 2))
+	assert.Equal(int(-3), SignedSumAssumeNoOverflow(-1, -2))
+	assert.Equal(int(-1), SignedSumAssumeNoOverflow(1, -2))
+	assert.Equal(int(math.MaxInt), SignedSumAssumeNoOverflow(math.MaxInt, 0))
+	assert.Equal(int(math.MinInt), SignedSumAssumeNoOverflow(math.MinInt, 0))
+	assert.Panics(func() { SignedSumAssumeNoOverflow(math.MaxInt, 1) })
+	assert.Panics(func() { SignedSumAssumeNoOverflow(math.MinInt, -1) })
+	assert.Panics(func() { SignedSumAssumeNoOverflow(1, math.MaxInt) })
 }
 
 func TestBytesEqual(t *testing.T) {

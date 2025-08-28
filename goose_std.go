@@ -1,8 +1,10 @@
 package std
 
 import (
+	"math"
 	"sync"
 
+	"github.com/goose-lang/primitive"
 	"github.com/goose-lang/std/std_core"
 )
 
@@ -23,6 +25,11 @@ func SumNoOverflow(x uint64, y uint64) bool {
 // *Use with care* - if the assumption is violated this function will panic.
 func SumAssumeNoOverflow(x uint64, y uint64) uint64 {
 	return std_core.SumAssumeNoOverflow(x, y)
+}
+
+func SignedSumAssumeNoOverflow(x int, y int) int {
+	primitive.Assume((y >= 0 && x <= math.MaxInt-y) || (y < 0 && x >= math.MinInt-y))
+	return x + y
 }
 
 // BytesEqual returns if the two byte slices are equal.
