@@ -3,6 +3,7 @@ package std
 import (
 	"math"
 	"testing"
+	"sync"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -86,4 +87,13 @@ func TestMultipar(t *testing.T) {
 func TestSkip(t *testing.T) {
 	// nothing much to test, it does nothing
 	Skip()
+}
+
+func TestWaitTimeout(t *testing.T) {
+	var m sync.Mutex
+	c := sync.NewCond(&m)
+
+	m.Lock()
+	WaitTimeout(c, 10)
+	m.Unlock()
 }
