@@ -3,6 +3,7 @@ package std
 import (
 	"math"
 	"sync"
+	"time"
 
 	"github.com/goose-lang/primitive"
 	"github.com/goose-lang/std/std_core"
@@ -164,3 +165,27 @@ func Multipar(num uint64, op func(uint64)) {
 // is a simple way to do so - the model always requires one step to reduce this
 // application to a value.
 func Skip() {}
+
+// WaitTimeout is like cond.Wait(), but waits for a maximum time of timeoutMs
+// milliseconds.
+//
+// Not provided by sync.Cond, so we have to (inefficiently) implement this
+// ourselves.
+func WaitTimeout(cond *sync.Cond, timeoutMs uint64) {
+	done := make(chan struct{})
+	go func() {
+		cond.Wait()
+		cond.L.Unlock()
+		close(done)
+	}()
+	select {
+	case <-time.After(time.Duration(timeoutMs) * time.Millisecond):
+		// timed out
+		cond.L.Lock()
+		return
+	case <-done:
+		// Wait returned
+		cond.L.Lock()
+		return
+	}
+}
