@@ -2,8 +2,8 @@ package std
 
 import (
 	"math"
-	"testing"
 	"sync"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
